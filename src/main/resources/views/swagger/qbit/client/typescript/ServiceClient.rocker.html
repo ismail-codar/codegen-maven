@@ -1,0 +1,22 @@
+@import codegen.util.SwaggerUtil
+@import io.vertx.core.json.JsonObject
+@import java.util.Map
+
+@args (String packageName, String className, Map itemMap)
+
+export class @SwaggerUtil.firstCharUpperCase(className)@raw("ServiceClient") {
+@for ((String key, JsonObject item) : itemMap) {
+	@for ((String entryKey, JsonObject entryValue) : item.getMap()) {
+    @entryValue.getString("operationId")(@if(entryValue.getJsonArray("parameters") != null) {@for ((ForIterator i, JsonObject param) : entryValue.getJsonArray("parameters").getList()) {@param.getString("name")@if(param.getBoolean("required") == false){?}:@raw(SwaggerUtil.typeRefNameTs(param))@if(i.last() == false){, }}}): Promise@raw("<" + SwaggerUtil.responseTypeName(entryValue.getJsonObject("responses"), packageName, true) + ">") {
+		return new Promise@raw("<" + SwaggerUtil.responseTypeName(entryValue.getJsonObject("responses"), packageName, true) + ">")((resolve, reject) => {
+			fetch(clientApiOptions.rootUrl + @raw(SwaggerUtil.fetchOptionsTs(className, key, entryKey, entryValue))).then(function (response) {
+				response.@raw(SwaggerUtil.isSimpleType(entryValue.getJsonObject("responses")) == true ? "text" : "json")().then(function (@SwaggerUtil.responseTypeParam(entryValue.getJsonObject("responses"), packageName)) {
+					resolve(@SwaggerUtil.responseTypeParam(entryValue.getJsonObject("responses"), packageName));
+				})
+			})
+		 });
+	}
+	
+    }
+}
+}

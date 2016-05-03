@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.example.org/codegen/"
+	targetNamespace="http://www.example.org/codegen/">
+	<element name="configuration">
+		<complexType>
+			<all>
+				<element name="swagger" type="tns:SwaggerType" minOccurs="1"
+					maxOccurs="1" />
+			</all>
+		</complexType>
+	</element>
+
+	<complexType name="SwaggerType">
+		<sequence>
+			<element name="server" type="tns:ServerType"></element>
+			<element name="client" type="tns:ClientType"></element>
+		</sequence>
+		<attribute name="schemaPath" type="string"></attribute>
+	</complexType>
+
+
+
+	<complexType name="ClientType">
+
+		<sequence>
+			<element name="target" type="string"></element>
+			<element name="rootUrl" type="string"></element>
+			<element name="references" type="string"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="ServerType">
+		<sequence>
+			<element name="packageName" type="string"></element>
+			<element name="targetFolder" type="string"></element>
+		</sequence>
+	</complexType>
+
+</schema>

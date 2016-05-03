@@ -1,0 +1,28 @@
+@import codegen.util.SwaggerUtil
+@import java.util.Map
+@import io.vertx.core.json.JsonObject
+@import com.fizzed.rocker.ForIterator
+
+@args (String packageName, String className, String classPath, Map itemMap, JsonObject schema)
+package @packageName@raw(".service");
+
+import io.advantageous.qbit.annotation.PathVariable;
+import io.advantageous.qbit.annotation.RequestMapping;
+import io.advantageous.qbit.annotation.RequestParam;
+import io.advantageous.qbit.annotation.RequestMethod;
+import io.advantageous.qbit.reactive.Callback;
+
+@raw("@")RequestMapping(value = "/@classPath")
+public class @className {
+	@packageName@raw(".service.impl." + className + "Impl") serviceImpl = new @packageName@raw(".service.impl." + className + "Impl")();
+@for ((String key, JsonObject item) : itemMap) {
+	@for ((String entryKey, JsonObject entryValue) : item.getMap()) {
+	
+	@raw("@")RequestMapping(value = "@key", method = RequestMethod.@entryKey.toUpperCase(), description = "@entryValue.getString("description")", returnDescription = "@SwaggerUtil.responseDescription(entryValue.getJsonObject("responses").getMap())", summary = "@entryValue.getString("summary")", code = -1, contentType = "@entryValue.getJsonArray("produces").getString(0)")
+	public void @entryValue.getString("operationId")(final Callback@raw("<" + SwaggerUtil.responseTypeName(entryValue.getJsonObject("responses"), packageName, false) + ">") callback@if(entryValue.getJsonArray("parameters") != null) {, @for ((ForIterator i, JsonObject param) : entryValue.getJsonArray("parameters").getList()) {
+		@if(entryKey.equals("post") == false && entryKey.equals("put") == false){@raw("@" + (param.getString("in").equals("path") ? "PathVariable" : "RequestParam"))(value = "@param.getString("name")", @if(param.getString("in").equals("path") == false) {required = @param.getBoolean("required"), }description = "@param.getString("description")")} @raw(SwaggerUtil.typeRefName(param, packageName)) @param.getString("name")@if(i.last() == false){, }}}) {
+		serviceImpl.@entryValue.getString("operationId")(callback@for (JsonObject param : SwaggerUtil.getJsonList(entryValue.getJsonArray("parameters"))) {, @param.getString("name")});
+	}
+	}
+}
+}

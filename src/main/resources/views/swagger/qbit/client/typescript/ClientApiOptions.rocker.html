@@ -1,0 +1,7 @@
+@args (String[] references, String rootUrl)
+@for (String ref : references) {/// <reference path="@ref.trim()" />
+}
+export var clientApiOptions = {
+    rootUrl: "@rootUrl"
+};
+

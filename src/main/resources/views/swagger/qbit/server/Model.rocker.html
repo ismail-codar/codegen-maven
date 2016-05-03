@@ -1,0 +1,20 @@
+@import codegen.util.SwaggerUtil
+@import io.vertx.core.json.JsonObject
+
+@args (String packageName, String className, JsonObject definition)
+package @packageName@raw(".model");
+
+public class @className {@for ((String key, JsonObject item) : definition.getJsonObject("properties").getMap()) {
+	private @raw(SwaggerUtil.typeRefName(item, packageName)) @key = null;}
+	
+@for ((String key, JsonObject item) : definition.getJsonObject("properties").getMap()) {
+	public @raw(SwaggerUtil.typeRefName(item, packageName)) get@SwaggerUtil.firstCharUpperCase(key)@raw("()") {
+		return @key;
+	}
+	public void set@SwaggerUtil.firstCharUpperCase(key)(@raw(SwaggerUtil.typeRefName(item, packageName)) value) {
+		@key = value;
+	}
+	
+}
+}
+

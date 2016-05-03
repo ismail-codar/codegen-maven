@@ -1,0 +1,10 @@
+@import codegen.util.SwaggerUtil
+@import io.vertx.core.json.JsonObject
+
+@args (String className, JsonObject definition)
+
+export interface @className {
+    @for ((String key, JsonObject item) : definition.getJsonObject("properties").getMap()) {
+	@key@raw(SwaggerUtil.isRequiredProperty(key, definition.getJsonArray("required")) ? "" : "?"):@raw(SwaggerUtil.typeRefNameTs(item));
+	}
+}
