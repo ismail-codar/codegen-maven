@@ -1,33 +1,6 @@
-## Example Usage
-```xml
-<plugin>
-	<groupId>codegen</groupId>
-	<artifactId>codegen-maven</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<executions>
-		<execution>
-			<id>exec-codegen</id>
-			<phase>generate-sources</phase>
-			<goals>
-				<goal>generate</goal>
-			</goals>
-			<configuration>
-				<swagger>
-					<schemaPath>./petstore-server/src/main/resources/petstore.yaml</schemaPath>
-					<server>
-						<packageName>petstore.server</packageName>
-						<targetFolder>./petstore-server/src/main/java/</targetFolder>
-					</server>
-					<client>
-						<rootUrl>server</rootUrl>
-						<references>
-						../../../../typings/main/ambient/whatwg-fetch/index.d.ts
-						</references>
-						<target>./client/clientApi.ts</target>
-					</client>
-				</swagger>
-			</configuration>
-		</execution>
-	</executions>
-</plugin>
-```
+# About
+- This project under development.
+- [ jackson-datatype-vertx](https://github.com/Crunc/jackson-datatype-vertx) latest version used. But cannot be found at the maven repositories. You must download it's source code and install via mvn install command.
+
+### Example Usage
+https://github.com/ismail-codar/codegen-example-petstore-server
